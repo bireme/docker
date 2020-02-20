@@ -1,0 +1,44 @@
+version: '2.4'
+
+services:
+  catalina1:
+    container_name: catalina1
+    image: bireme/tomcat:v1.0
+    network_mode: bridge
+    depends_on: 
+      - nginx-proxy
+    #ports:
+            #  - "8081:8080"
+    restart: always
+    environment:
+      - VIRTUAL_HOST=catalina1.bireme.org
+        # - VIRTUAL_PORT="8080"
+    mem_limit: 256m
+    # mem_reservation: 512m
+  
+  catalina2:
+    container_name: catalina2
+    image: bireme/tomcat:v1.0
+    network_mode: bridge
+    depends_on: 
+      - nginx-proxy
+    #ports:
+            #  - "8082:8080"
+    restart: always
+    environment:
+      - VIRTUAL_HOST=catalina2.bireme.org
+        #  - VIRTUAL_PORT="8080"
+    mem_limit: 256m
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy:alpine
+    network_mode: bridge
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /tmp/docker.sock
+    mem_limit: 64m
