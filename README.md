@@ -1,3 +1,3 @@
 # docker
 
-#run: docker-compose up -d
+run: $docker-compose up -d
