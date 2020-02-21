@@ -3,7 +3,7 @@ version: '2.4'
 services:
   catalina1:
     container_name: catalina1
-    image: bireme/tomcat:v1.0
+    build: ./catalina/
     network_mode: bridge
     depends_on: 
       - nginx-proxy
@@ -13,22 +13,23 @@ services:
     environment:
       - VIRTUAL_HOST=catalina1.bireme.org
         # - VIRTUAL_PORT="8080"
-    mem_limit: 256m
+    mem_limit: 128m
     # mem_reservation: 512m
   
   catalina2:
     container_name: catalina2
-    image: bireme/tomcat:v1.0
+    image: tomcat_catalina1
     network_mode: bridge
     depends_on: 
       - nginx-proxy
+      - catalina1
     #ports:
             #  - "8082:8080"
     restart: always
     environment:
       - VIRTUAL_HOST=catalina2.bireme.org
         #  - VIRTUAL_PORT="8080"
-    mem_limit: 256m
+    mem_limit: 128m
 
   nginx-proxy:
     container_name: nginx-proxy
