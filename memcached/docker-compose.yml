@@ -1,0 +1,14 @@
+version: '2.4'
+
+services:
+  memcached:
+    image: memcached:1.6.1-alpine
+    container_name: memcached1
+    ports:
+      - "11211:11211"
+    volumes:
+      - ./data/memcached:/app/data
+    restart: always
+    mem_limit: 192m
+    #o "command" adiciona comandos ao entrypoint do dockerfile (nesse caso, dockerfile original do dev )
+    command: -m 128
