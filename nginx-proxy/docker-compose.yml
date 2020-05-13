@@ -1,0 +1,18 @@
+version: '2.0'
+
+services:
+  nginx-proxy:
+    restart: always
+    image: jwilder/nginx-proxy:latest
+    ports:
+      - '80:80'
+    volumes:
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+    networks:
+      - nginx-proxy
+    container_name: nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true
+
