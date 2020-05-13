@@ -14,6 +14,7 @@ services:
       - '/etc/nginx/certs'
     networks:
       - nginx-proxy
+    mem_limit: 128m
 
   letsencrypt-nginx-proxy-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -21,6 +22,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     volumes_from:
       - 'nginx-proxy'
+    mem_limit: 128m
 
 networks:
   nginx-proxy:
