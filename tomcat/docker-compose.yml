@@ -11,15 +11,15 @@ services:
             #  - "8081:8080"
     restart: always
     environment:
-      - VIRTUAL_HOST=catalina1.bireme.org
+      - VIRTUAL_HOST=catalina1.teste.bireme.org
         # - VIRTUAL_PORT="8080"
     mem_limit: 128m
     # mem_reservation: 512m
   
   catalina2:
     container_name: catalina2
-    image: tomcat_catalina1
     network_mode: bridge
+    image: tomcat_catalina1
     depends_on: 
       - nginx-proxy
       - catalina1
@@ -27,7 +27,7 @@ services:
             #  - "8082:8080"
     restart: always
     environment:
-      - VIRTUAL_HOST=catalina2.bireme.org
+      - VIRTUAL_HOST=catalina2.teste.bireme.org
         #  - VIRTUAL_PORT="8080"
     mem_limit: 128m
 
@@ -38,7 +38,7 @@ services:
     ports:
       - "80:80"
     restart: always
-    volumes:
+    volumes:  
       - type: bind
         source: /var/run/docker.sock
         target: /tmp/docker.sock
