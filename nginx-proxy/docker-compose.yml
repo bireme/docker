@@ -5,7 +5,7 @@ services:
     container_name: nginx-proxy
     restart: always
     mem_limit: 128m
-    image: jwilder/nginx-proxy:latest
+    image: jwilder/nginx-proxy:alpine
     ports:
       - '80:80'
       - '443:443'
@@ -23,7 +23,7 @@ services:
     container_name: nginx-companion-le
     restart: always
     mem_limit: 128m
-    image: jrcs/letsencrypt-nginx-proxy-companion:latest
+    image: jrcs/letsencrypt-nginx-proxy-companion:stable
     volumes:
       - 'certs:/etc/nginx/certs:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
