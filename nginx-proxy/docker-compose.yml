@@ -2,18 +2,45 @@ version: '2.4'
 
 services:
   nginx-proxy:
+    container_name: nginx-proxy
     restart: always
+    mem_limit: 128m
     image: jwilder/nginx-proxy:latest
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - 'conf:/etc/nginx/conf.d'
+      - 'vhost:/etc/nginx/vhost.d'
+      - 'html:/usr/share/nginx/html'
+      - 'dhparam:/etc/nginx/dhparam'
+      - 'certs:/etc/nginx/certs:ro'
     networks:
       - nginx-proxy
-    container_name: nginx-proxy
+
+  nginx-companion-le:
+    container_name: nginx-companion-le
+    restart: always
     mem_limit: 128m
+    image: jrcs/letsencrypt-nginx-proxy-companion:latest
+    volumes:
+      - 'certs:/etc/nginx/certs:rw'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    volumes_from:
+      - 'nginx-proxy'
+    env_file:
+      - ./.env
+    networks:
+      - nginx-proxy
 
 networks:
   nginx-proxy:
     external: true
 
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
