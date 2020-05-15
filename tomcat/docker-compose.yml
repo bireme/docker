@@ -3,43 +3,26 @@ version: '2.4'
 services:
   catalina1:
     container_name: catalina1
-    build: ./catalina/
-    network_mode: bridge
-    depends_on: 
-      - nginx-proxy
-    #ports:
-            #  - "8081:8080"
     restart: always
+    mem_limit: 128m
+    build: ./catalina/
     environment:
       - VIRTUAL_HOST=catalina1.teste.bireme.org
-        # - VIRTUAL_PORT="8080"
-    mem_limit: 128m
-    # mem_reservation: 512m
-  
+    networks:
+      - nginx-proxy
+
   catalina2:
     container_name: catalina2
-    network_mode: bridge
-    image: tomcat_catalina1
-    depends_on: 
-      - nginx-proxy
-      - catalina1
-    #ports:
-            #  - "8082:8080"
     restart: always
+    mem_limit: 128m
+    image: tomcat_catalina1
     environment:
       - VIRTUAL_HOST=catalina2.teste.bireme.org
-        #  - VIRTUAL_PORT="8080"
-    mem_limit: 128m
+    depends_on: 
+      - catalina1
+    networks:
+      - nginx-proxy
 
-  nginx-proxy:
-    container_name: nginx-proxy
-    image: jwilder/nginx-proxy:alpine
-    network_mode: bridge
-    ports:
-      - "80:80"
-    restart: always
-    volumes:  
-      - type: bind
-        source: /var/run/docker.sock
-        target: /tmp/docker.sock
-    mem_limit: 64m
+networks:
+    nginx-proxy:
+        external: true
