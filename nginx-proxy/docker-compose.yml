@@ -4,7 +4,7 @@ services:
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
-    mem_limit: 128m
+    mem_limit: 64m
     image: jwilder/nginx-proxy:alpine
     ports:
       - '80:80'
@@ -23,7 +23,7 @@ services:
   nginx-companion-le:
     container_name: nginx-companion-le
     restart: always
-    mem_limit: 128m
+    mem_limit: 32m
     image: jrcs/letsencrypt-nginx-proxy-companion:stable
     volumes:
       - 'certs:/etc/nginx/certs:rw'
