@@ -2,9 +2,9 @@ version: '3'
 services:
   solr:
     container_name: ${CONTAINER_NAME}
-    restart: unless-stopped
     build:
       context: .
+    image: bireme/solr:5.5.5
     ports:
      - "8083:${CONTAINER_PORT}"
     env_file:
