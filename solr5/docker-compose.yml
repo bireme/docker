@@ -1,14 +1,9 @@
 version: '3'
 services:
   solr:
-    container_name: ${CONTAINER_NAME}
+    image: bireme/solr:5.5.5
     build:
       context: .
-    image: bireme/solr:5.5.5
-    ports:
-     - "8083:${CONTAINER_PORT}"
-    env_file:
-      - .env
     #user: "${USER_GROUP_IDS}"
     volumes:
       - ./solr_indexes:/opt/solr/server/solr/mycores
