@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.4.9
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--entryPoints.traefik.address=:8081"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--certificatesresolvers.le"
+      #- "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.le.acme.storage=acme.json"
+      - "--certificatesresolvers.le.acme.email=birsuporte@paho.org"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      - "--providers.docker=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.network=traefik"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8081" #Web UI
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/letsencrypt/certs/acme.json:/etc/acme/acme.json
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
