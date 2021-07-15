@@ -5,7 +5,7 @@ services:
     container_name: portainer
     restart: unless-stopped
     mem_limit: 32m
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     volumes:
       - 'data:/data:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
