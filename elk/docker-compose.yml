@@ -1,0 +1,84 @@
+version: '3.7'
+services:
+    elasticsearch:
+        image: elasticsearch:7.12.0
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        environment:
+            discovery.type: single-node
+            ES_JAVA_OPTS: ${ELASTIC_JAVA_OPTS}
+            ELASTIC_USERNAME: "elastic"
+            ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+            http.cors.enabled: "true"
+            http.cors.allow-origin: "*"
+            xpack.security.enabled: "true"
+        volumes:
+            - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+            - data:/usr/share/elasticsearch/data
+        networks:
+            - nginx-proxy
+
+    #logstash:
+    #    image: logstash:7.12.0
+    #    depends_on:
+    #        - elasticsearch
+    #    ports:
+    #        - "5044:5044"
+    #        - "5000:5000"
+    #        - "9600:9600"
+    #    environment:
+    #        LS_JAVA_OPTS: ${LOGSTASH_JAVA_OPTS}
+    #        xpack.monitoring.elasticsearch.username: "elastic"
+    #        xpack.monitoring.elasticsearch.password: ${ELASTIC_PASSWORD}
+    #    volumes:
+    #        - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+    #        - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    #        - ./logs/:/logs:ro
+    #    networks:
+    #        - nginx-proxy
+
+    apm:
+        image: docker.elastic.co/apm/apm-server:7.13.1
+        depends_on:
+            - elasticsearch
+        ports:
+            - "8200:8200"
+        cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+        cap_drop: ["ALL"]
+        command: >
+            apm-server -e
+                -E apm-server.rum.enabled=true
+                -E setup.kibana.host=kibana:5601
+                -E setup.template.settings.index.number_of_replicas=0
+                -E apm-server.kibana.enabled=true
+                -E apm-server.kibana.host=kibana:5601
+                -E output.elasticsearch.hosts=["elasticsearch:9200"]
+                -E output.elasticsearch.username="elastic"
+                -E output.elasticsearch.password=${ELASTIC_PASSWORD}
+        networks:
+            - nginx-proxy
+
+
+    kibana:
+        image: kibana:7.12.0
+        depends_on:
+            - elasticsearch
+        ports:
+            - "5601:5601"
+        environment:
+            VIRTUAL_HOST: ${VIRTUAL_HOST}
+            LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+            ELASTICSEARCH_USERNAME: "elastic"
+            ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD}
+        volumes:
+            - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+        networks:
+            - nginx-proxy
+
+volumes:
+    data:
+
+networks:
+    nginx-proxy:
+        external: true
