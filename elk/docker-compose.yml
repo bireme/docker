@@ -18,6 +18,12 @@ services:
             - data:/usr/share/elasticsearch/data
         networks:
             - nginx-proxy
+        deploy:
+            resources:
+                limits:
+                    memory: ${MEMORY_ELASTIC_LIMIT}
+                reservations:
+                    memory: ${MEMORY_ELASTIC_RESERVATION}
 
     #logstash:
     #    image: logstash:7.12.0
@@ -58,7 +64,12 @@ services:
                 -E output.elasticsearch.password=${ELASTIC_PASSWORD}
         networks:
             - nginx-proxy
-
+        deploy:
+            resources:
+                limits:
+                    memory: ${MEMORY_APM_LIMIT}
+                reservations:
+                    memory: ${MEMORY_APM_RESERVATION}
 
     kibana:
         image: kibana:7.12.0
@@ -75,6 +86,12 @@ services:
             - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
         networks:
             - nginx-proxy
+        deploy:
+            resources:
+                limits:
+                    memory: ${MEMORY_KIBANA_LIMIT}
+                reservations:
+                    memory: ${MEMORY_KIBANA_RESERVATION}
 
 volumes:
     data:
