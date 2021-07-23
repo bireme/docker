@@ -1,38 +1,71 @@
-version: '3'
-
+version: '3.8'
 services:
   traefik:
-    container_name: traefik
-    image: traefik:v2.4.9
-    restart: unless-stopped
+    container_name: 'traefik'
+    image: traefik:v2.4.11
     command:
-      - "--api.insecure=true"
-      - "--entryPoints.traefik.address=:8081"
-      - "--entryPoints.web.address=:80"
-      - "--entryPoints.websecure.address=:443"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
-      - "--certificatesresolvers.le"
-      #- "--certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.le.acme.storage=acme.json"
-      - "--certificatesresolvers.le.acme.email=birsuporte@paho.org"
-      - "--certificatesresolvers.le.acme.httpchallenge=true"
-      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-      - "--providers.docker=true"
-      - "--providers.docker.watch=true"
-      - "--providers.docker.network=traefik"
-      - "--accesslog=true"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8081:8081" #Web UI
+      ## Log settings
+      - '--log.level=INFO'
+      #- '--log.format=json'
+
+      ## Provider Settings
+      - '--providers.docker=true'
+      - '--providers.docker.network=traefik'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.file.filename=/traefik-config/dynamic.yml'
+      - '--providers.file.watch=true'
+
+      ## Entrypoints Settings
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+      - '--entryPoints.ping.address=:8082'
+
+      ## Global HTTP to HTTPS redirection
+      - '--entrypoints.web.http.redirections.entrypoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entrypoint.scheme=https'
+
+      ## Let's Encrypt Certificate Settings
+      - '--certificatesresolvers.lets-encrypt.acme.tlschallenge=true'
+      - '--certificatesresolvers.lets-encrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory'
+      - '--certificatesresolvers.lets-encrypt.acme.email=${ACME_EMAIL}'
+      - '--certificatesresolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json'
+
+      ## API Settings
+      - '--api.dashboard=true'
+      - '--api.debug=true'
+
+      ## Ping Settings
+      - '--ping.entryPoint=ping'
+
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/letsencrypt/certs/acme.json:/etc/acme/acme.json
+      - './traefik-config/dynamic.yml:/traefik-config/dynamic.yml'
+      - './letsencrypt:/letsencrypt'
+      - './.htpasswd:/.htpasswd:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    ports:
+      - '443:443'
+      - '80:80'
     networks:
-      - traefik
+      - 'traefik'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik'
+
+      - 'traefik.http.routers.traefik-secured.entrypoints=websecure'
+      - 'traefik.http.routers.traefik-secured.middlewares=basic-auth-secured@file'
+      - 'traefik.http.routers.traefik-secured.rule=Host(`dashboard.dockertst.${ACME_DOMAIN_NAME}`)'
+      - 'traefik.http.routers.traefik-secured.service=api@internal'
+      - 'traefik.http.routers.traefik-secured.tls.certresolver=lets-encrypt'
+      - 'traefik.http.routers.traefik-secured.tls.options=mintls12@file'
+    restart: 'unless-stopped'
+    security_opt:
+      - 'no-new-privileges:true'
+    healthcheck:
+      test: 'wget --quiet --spider http://localhost:8082/ping || exit 1'
+      interval: '30s'
+      timeout: '3s'
+      start_period: '5s'
+      retries: 3
 
 networks:
   traefik:
