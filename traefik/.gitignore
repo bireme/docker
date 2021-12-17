@@ -1,0 +1,4 @@
+.env
+.htpasswd*
+acme*.json*
+docker-compose.yml
