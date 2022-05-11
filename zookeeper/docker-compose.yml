@@ -11,6 +11,9 @@ services:
     environment:
       ZOO_MY_ID: ${ZOO_ID}
       ZOO_SERVERS: ${ZOO_SERVERS}
+      ZOO_4LW_COMMANDS_WHITELIST: ${ZOO_4LW_COMMANDS_WHITELIST}
+      ZOO_AUTOPURGE_PURGEINTERVAL: ${ZOO_AUTOPURGE_PURGEINTERVAL}
+      JVMFLAGS: ${JVMFLAGS}
 
     networks:
       - nginx-proxy
