@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: zookeeper:3.8.0
+    container_name: zookeeper
+    restart: unless-stopped
+    hostname: ${HOSTNAME}
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: ${ZOO_ID}
+      ZOO_SERVERS: ${ZOO_SERVERS}
+
+    networks:
+      - nginx-proxy
+
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT}
+        reservations:
+          memory: ${MEMORY_RESERVATION}
+
+networks:
+  nginx-proxy:
+    external: true
