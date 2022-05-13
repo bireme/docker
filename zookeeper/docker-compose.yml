@@ -6,8 +6,8 @@ services:
     container_name: zookeeper
     restart: unless-stopped
     hostname: ${HOSTNAME}
-    ports:
-      - 2181:2181
+    network_mode: "host"
+
     environment:
       ZOO_MY_ID: ${ZOO_ID}
       ZOO_SERVERS: ${ZOO_SERVERS}
@@ -15,16 +15,9 @@ services:
       ZOO_AUTOPURGE_PURGEINTERVAL: ${ZOO_AUTOPURGE_PURGEINTERVAL}
       JVMFLAGS: ${JVMFLAGS}
 
-    networks:
-      - nginx-proxy
-
     deploy:
       resources:
         limits:
           memory: ${MEMORY_LIMIT}
         reservations:
           memory: ${MEMORY_RESERVATION}
-
-networks:
-  nginx-proxy:
-    external: true
