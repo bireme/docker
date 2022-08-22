@@ -1,0 +1,40 @@
+version: '3'
+services:
+  srv-tomcat:
+    build:
+      context: .
+    image: bireme/tomcat7-nginx-balancer:1.0.0
+    restart: unless-stopped
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+      - ${LOG_PATH}:/usr/local/tomcat/logs
+    networks:
+      - nginx-proxy
+    deploy:
+      replicas: ${REPLICAS}
+      resources:
+        limits:
+          memory: ${MEMORY_APP_LIMIT}
+        reservations:
+          memory: ${MEMORY_APP_RESERVATION}
+
+  balancer:
+    image: nginx:1.20-alpine
+    restart: unless-stopped
+    volumes:
+      - ./conf/nginx:/etc/nginx/conf.d
+    depends_on:
+      - srv-tomcat
+    ports:
+      - "3000:3000"
+    networks:
+      - nginx-proxy
+
+
+networks:
+  nginx-proxy:
+    external: true
