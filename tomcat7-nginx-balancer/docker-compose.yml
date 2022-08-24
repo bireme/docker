@@ -10,7 +10,7 @@ services:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
     volumes:
-      - ./webapps:/usr/local/tomcat/webapps
+      - ${WEBAPPS_PATH}:/usr/local/tomcat/webapps
       - ${LOG_PATH}:/usr/local/tomcat/logs
     networks:
       - nginx-proxy
