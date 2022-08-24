@@ -1,0 +1,1 @@
+Container que permite executar multiplas instâncias do TOMCAT 7 (replicas) e realiza balanceamento usando NGINX
