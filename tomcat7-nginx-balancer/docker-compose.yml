@@ -8,7 +8,7 @@ services:
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST}
     volumes:
       - ${WEBAPPS_PATH}:/usr/local/tomcat/webapps
       - ${LOG_PATH}:/usr/local/tomcat/logs
