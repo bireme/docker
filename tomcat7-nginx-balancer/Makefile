@@ -4,22 +4,22 @@ COMPOSE_FILE = docker-compose.yml
 
 ## docker-compose shortcuts
 build:
-	@docker-compose -f $(COMPOSE_FILE) build
+	@docker-compose --compatibility -f $(COMPOSE_FILE) build
 
 run:
-	@docker-compose -f $(COMPOSE_FILE) up
+	@docker-compose --compatibility -f $(COMPOSE_FILE) up
 
 start:
-	@docker-compose -f $(COMPOSE_FILE) up -d
+	@docker-compose --compatibility -f $(COMPOSE_FILE) up -d
 
 stop:
-	@docker-compose -f $(COMPOSE_FILE) stop
+	@docker-compose --compatibility -f $(COMPOSE_FILE) stop
 
 logs:
-	@docker-compose -f $(COMPOSE_FILE) logs -f
+	@docker-compose --compatibility -f $(COMPOSE_FILE) logs -f
 
 ps:
-	@docker-compose -f $(COMPOSE_FILE) ps
+	@docker-compose --compatibility -f $(COMPOSE_FILE) ps
 
 shell:
-	@docker-compose -f $(COMPOSE_FILE) exec srv-tomcat sh
+	@docker-compose --compatibility -f $(COMPOSE_FILE) exec srv-tomcat sh
