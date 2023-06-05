@@ -1,7 +1,7 @@
 version: '3'
 services:
   solr:
-    image: bireme/solr:9.1.1
+    image: bireme/solr:9.2.1
     build:
       context: .
     #user: "${USER_GROUP_IDS}"

@@ -1,4 +1,4 @@
-FROM docker.io/bitnami/solr:9.1.1
+FROM docker.io/bitnami/solr:9.2.1
 
 # copy decs lucene index
 COPY ./resources /opt/bitnami/solr/server/resources
