@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  dremio:
+    image: dremio/dremio-oss:24.3
+    hostname: dremio
+    volumes:
+      - ./localFiles:/localFiles
+      - ./conf:/opt/dremio/conf
+      - data:/opt/dremio/data
+    ports:
+      - "9047:9047"   # Web UI (HTTP)
+      - "2181:2181"   # Zookeeper
+      - "31010:31010" # ODBC/JDBC clients
+      - "32010:32010" # Apache Arrow Flight clients
+      - "45678:45678" # Fabric
+
+volumes:
+   data:
