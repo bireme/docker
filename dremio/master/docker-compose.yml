@@ -3,7 +3,6 @@ version: '3'
 services:
   dremio:
     image: dremio/dremio-oss:24.3
-    hostname: dremio
     volumes:
       - ./localFiles:/localFiles
       - ./conf:/opt/dremio/conf
@@ -14,6 +13,9 @@ services:
       - "31010:31010" # ODBC/JDBC clients
       - "32010:32010" # Apache Arrow Flight clients
       - "45678:45678" # Fabric
+    network_mode: "host"
+    environment:
+      - LOCAL_CONTAINER_IP=${LOCAL_CONTAINER_IP}
 
 volumes:
    data:
