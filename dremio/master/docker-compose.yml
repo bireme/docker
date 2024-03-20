@@ -15,7 +15,7 @@ services:
       - "45678:45678" # Fabric
     network_mode: "host"
     environment:
-      - LOCAL_CONTAINER_IP=${LOCAL_CONTAINER_IP}
+      - MASTER_CONTAINER_IP=${MASTER_CONTAINER_IP}
 
 volumes:
    data:
