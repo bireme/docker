@@ -5,7 +5,6 @@ services:
     image: dremio/dremio-oss:24.3
     container_name: dremio
     volumes:
-      - ./localFiles:/localFiles
       - ./conf:/opt/dremio/conf
       - data:/opt/dremio/data
     environment:

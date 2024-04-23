@@ -4,4 +4,4 @@
 # update version
 docker pull dremio/dremio-oss:24.3
 
-docker compose up
+docker compose up -d
