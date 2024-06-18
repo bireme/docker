@@ -4,8 +4,9 @@ services:
   promtail:
     image: grafana/promtail:latest
     container_name: promtail-send-logs
-    restart: always    
+    restart: always
     volumes:
       - ./conf:/etc/promtail
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${PATH_LOGS}:/var/log
     command: -config.file=/etc/promtail/config.yml
