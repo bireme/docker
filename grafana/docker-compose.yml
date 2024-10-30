@@ -1,6 +1,7 @@
 services:
   grafana:
     image: grafana/grafana:11.3.0
+    container_name: grafana
     ports:
       - ${GRAFANA_PORT}:3000
     volumes:
@@ -11,6 +12,7 @@ services:
 
   loki:
     image: grafana/loki:latest
+    container_name: grafana-loki
     ports:
       - ${LOKI_PORT}:3100
     command: -config.file=/etc/loki/local-config.yaml
