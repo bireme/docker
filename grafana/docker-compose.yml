@@ -15,5 +15,7 @@ services:
     container_name: grafana-loki
     ports:
       - ${LOKI_PORT}:3100
+    volumes:
+      - ./config/loki-local-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
 
