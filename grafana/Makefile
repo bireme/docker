@@ -1,15 +1,15 @@
 run:
-	@docker compose up
+	@docker-compose up
 
 start:
-	@docker compose up -d
+	@docker-compose up -d
 
 stop:
-	@docker compose stop
+	@docker-compose stop
 
 logs:
-	@docker compose logs -f
+	@docker-compose logs -f
 
 ps:
-	@docker compose ps
+	@docker-compose ps
 
