@@ -1,7 +1,7 @@
 default: run
 
 core?=test
-container?=solr9-srv1
+container?=solr9-srv
 shards?=3
 replication?=2
 
@@ -40,7 +40,7 @@ update_core_config:
 	docker cp ./conf/configsets/$(core)/conf/ $(container):/bitnami/solr/server/solr/$(core)/
 
 create_core:
-	docker compose exec -T solr /opt/bitnami/solr/bin/solr create_core -c $(core) -d $(core) --solr-url http://localhost:8983/solr
+	docker-compose exec -T solr /opt/bitnami/solr/bin/solr create_core -c $(core) -d $(core) --solr-url http://localhost:8983
 
 zk_upconfig:
 	docker-compose exec -T solr /opt/bitnami/solr/bin/solr zk upconfig -n $(core) -d /bitnami/solr/server/solr/configsets/$(core)/

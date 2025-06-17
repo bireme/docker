@@ -1,4 +1,3 @@
-version: '3'
 services:
   solr_setup:
     image: bitnami/solr:9.8.1
