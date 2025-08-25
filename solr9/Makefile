@@ -1,28 +1,26 @@
 default: build
 
-COMPOSE_FILE = docker-compose.yml
-
-## docker-compose shortcuts
+## docker compose shortcuts
 build:
-	@docker-compose -f $(COMPOSE_FILE) build --no-cache
+	@docker compose build --no-cache
 
 run:
-	@docker-compose -f $(COMPOSE_FILE) up
+	@docker compose up
 
 start:
-	@docker-compose -f $(COMPOSE_FILE) up -d
+	@docker compose up -d
 
 stop:
-	@docker-compose -f $(COMPOSE_FILE) stop
+	@docker compose stop
 
 logs:
-	@docker-compose -f $(COMPOSE_FILE) logs -f
+	@docker compose logs -f
 
 ps:
-	@docker-compose -f $(COMPOSE_FILE) ps
+	@docker compose ps
 
 shell:
-	@docker-compose -f $(COMPOSE_FILE) exec solr sh
+	@docker -compose exec solr sh
 
 index_example:
-	@docker-compose -f $(COMPOSE_FILE) exec solr post -c gettingstarted example/exampledocs/manufacturers.xml
+	@docker-compose exec solr post -c gettingstarted example/exampledocs/manufacturers.xml
