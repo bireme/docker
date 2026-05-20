@@ -1,4 +1,3 @@
-version: '3'
 services:
   solr:
     image: bireme/solr:5.5.5
