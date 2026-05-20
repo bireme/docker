@@ -1,25 +1,27 @@
 default: build
 
-COMPOSE_FILE = docker-compose.yml
+# Use 'docker compose' if available (Docker 20.10+), otherwise fall back to 'docker-compose'
+DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null && echo docker-compose || echo docker) compose
 
 ## docker-compose shortcuts
-build:
-	@docker-compose -f $(COMPOSE_FILE) build
+update:
+	@$(DOCKER_COMPOSE) down
+	@$(DOCKER_COMPOSE) pull
 
 run:
-	@docker-compose -f $(COMPOSE_FILE) up
+	@$(DOCKER_COMPOSE) up
 
 start:
-	@docker-compose -f $(COMPOSE_FILE) up -d
+	@$(DOCKER_COMPOSE) up -d
 
 stop:
-	@docker-compose -f $(COMPOSE_FILE) stop
+	@$(DOCKER_COMPOSE) stop
 
 logs:
-	@docker-compose -f $(COMPOSE_FILE) logs -f
+	@$(DOCKER_COMPOSE) logs -f
 
 ps:
-	@docker-compose -f $(COMPOSE_FILE) ps
+	@$(DOCKER_COMPOSE) ps
 
 shell:
-	@docker-compose -f $(COMPOSE_FILE) exec uptime sh
+	@$(DOCKER_COMPOSE) exec uptime sh
