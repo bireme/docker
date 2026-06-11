@@ -20,7 +20,7 @@ ps:
 	@docker compose ps
 
 shell:
-	@docker -compose exec solr sh
+	@docker compose exec solr sh
 
 index_example:
-	@docker-compose exec solr post -c gettingstarted example/exampledocs/manufacturers.xml
+	@docker compose exec solr post -c gettingstarted example/exampledocs/manufacturers.xml

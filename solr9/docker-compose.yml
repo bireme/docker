@@ -1,5 +1,5 @@
 services:
   solr:
-    image: bireme/solr:9.9.0
+    image: ${BIREME_SOLR_IMAGE_NAME}
     build:
       context: .

@@ -1,13 +1,13 @@
 services:
   solr_setup:
-    image: bitnami/solr:9.8.1
+    image: solr:9
     user: root
-    command: bash -c "chown -R 1001 /bitnami && chown -R 1001 /opt/bitnami/solr/logs"
+    command: bash -c "chown -R 8983:8983 /var/solr"
     volumes:
-      - ${SOLR_INDEX_PATH}:/bitnami
-      - ${SOLR_LOG_PATH}:/opt/bitnami/solr/logs
+      - ${SOLR_INDEX_PATH}:/var/solr
+      - ${SOLR_LOG_PATH}:/var/solr/logs
   solr:
-    image: bitnami/solr:9.8.1
+    image: solr:9
     restart: unless-stopped
     container_name: ${CONTAINER_NAME}
     depends_on:
@@ -20,12 +20,11 @@ services:
       - SOLR_HOST=${SOLR_HOST}
       - SOLR_HEAP=${SOLR_MEMORY}
     volumes:
-      - ${SOLR_INDEX_PATH}:/bitnami
-      - ${SOLR_LOG_PATH}:/opt/bitnami/solr/logs
+      - ${SOLR_INDEX_PATH}:/var/solr
+      - ${SOLR_LOG_PATH}:/var/solr/logs
     networks:
       - nginx-proxy
 
 networks:
   nginx-proxy:
     external: true
-

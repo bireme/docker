@@ -1,8 +1,9 @@
-FROM docker.io/bitnami/solr:9.9.0
+FROM solr:9
 
-# Copy decs lucene index
-COPY ./resources/decs /opt/bitnami/solr/server/resources/decs
+# DeCS Lucene index consumed by the iahx custom analyzers
+# (loaded from the classpath under server/resources/decs)
+COPY --chown=solr:solr ./resources/decs /opt/solr/server/resources/decs
 
-# Copy custom iahx analyzers to solr webapp lib folder
-# COPY ./lib /opt/bitnami/solr/server/solr-webapp/webapp/WEB-INF/lib
-
+# Bundle the iahx custom analyzer into Solr's webapp lib
+COPY --chown=solr:solr ./lib/iahx-analyzer.jar \
+     /opt/solr/server/solr-webapp/webapp/WEB-INF/lib/
