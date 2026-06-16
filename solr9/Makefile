@@ -1,9 +1,13 @@
 default: build
 
-## docker compose shortcuts
-build:
-	@docker compose build --no-cache
+include .env
+export
 
+## image build
+build:
+	@docker build --no-cache -t $(BIREME_SOLR_IMAGE_NAME) .
+
+## docker compose shortcuts (deploy)
 run:
 	@docker compose up
 

@@ -1,5 +1,15 @@
 services:
   solr:
     image: ${BIREME_SOLR_IMAGE_NAME}
-    build:
-      context: .
+    container_name: ${CONTAINER_NAME}
+    user: "${USER_GROUP_IDS}"
+    ulimits:
+      nofile:
+        soft: 65000
+        hard: 65000
+    ports:
+      - "${CONTAINER_PORT}:8983"
+    env_file:
+      - .env
+    volumes:
+      - ${IAHX_INDEX_PATH}:/var/solr/data
