@@ -5,29 +5,29 @@ export
 
 ## image build
 build:
-	@docker build --no-cache -t $(BIREME_SOLR_IMAGE_NAME) .
+    @docker build --no-cache -t $(BIREME_SOLR_IMAGE_NAME) .
 
 ## docker compose shortcuts (deploy)
 run:
-	@docker compose up
+    @docker compose up
 
 start:
-	@docker compose up -d
+    @docker compose up -d
 
 stop:
-	@docker compose stop
+    @docker compose stop
 
 down:
     @docker compose down
 
 logs:
-	@docker compose logs -f
+    @docker compose logs -f
 
 ps:
-	@docker compose ps
+    @docker compose ps
 
 sh:
-	@docker compose exec solr sh
+    @docker compose exec solr sh
 
 index_example:
-	@docker compose exec solr post -c gettingstarted example/exampledocs/manufacturers.xml
+    @docker compose exec solr post -c gettingstarted example/exampledocs/manufacturers.xml
