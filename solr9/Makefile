@@ -17,13 +17,16 @@ start:
 stop:
 	@docker compose stop
 
+down:
+    @docker compose down
+
 logs:
 	@docker compose logs -f
 
 ps:
 	@docker compose ps
 
-shell:
+sh:
 	@docker compose exec solr sh
 
 index_example:

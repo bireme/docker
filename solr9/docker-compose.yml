@@ -11,5 +11,9 @@ services:
       - "${CONTAINER_PORT}:8983"
     env_file:
       - .env
+    environment:
+      # The mounted index dir is itself the Solr home (solr.xml + cores at its
+      # root), so override the image default of /var/solr/data.
+      - SOLR_HOME=/var/solr
     volumes:
-      - ${IAHX_INDEX_PATH}:/var/solr/data
+      - ${IAHX_INDEX_PATH}:/var/solr
