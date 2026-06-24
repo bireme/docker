@@ -14,8 +14,6 @@ services:
       - ${LOG_PATH}:/usr/local/tomcat/logs
     networks:
       - nginx-proxy
-    logging:
-      driver: none
     deploy:
       replicas: ${REPLICAS}
       resources:
@@ -34,11 +32,8 @@ services:
       - srv-tomcat
     ports:
       - "3000:3000"
-    logging:
-      driver: none
     networks:
       - nginx-proxy
-
 
 networks:
   nginx-proxy:
