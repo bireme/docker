@@ -3,6 +3,8 @@ services:
     image: ${BIREME_SOLR_IMAGE_NAME}
     container_name: ${CONTAINER_NAME}
     user: "${USER_GROUP_IDS}"
+    restart: unless-stopped
+
     ulimits:
       nofile:
         soft: 65000

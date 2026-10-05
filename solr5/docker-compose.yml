@@ -4,5 +4,6 @@ services:
     build:
       context: .
     #user: "${USER_GROUP_IDS}"
+    restart: unless-stopped
     volumes:
       - ./solr_indexes:/opt/solr/server/solr/mycores
