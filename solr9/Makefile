@@ -7,6 +7,9 @@ export
 build:
 	@docker build --no-cache -t $(BIREME_SOLR_IMAGE_NAME) .
 
+build_update_solr:
+	@docker build --pull --no-cache -t $(BIREME_SOLR_IMAGE_NAME) .
+
 ## docker compose shortcuts (deploy)
 run:
 	@docker compose up
