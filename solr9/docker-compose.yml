@@ -19,3 +19,10 @@ services:
       - SOLR_HOME=/var/solr
     volumes:
       - ${IAHX_INDEX_PATH}:/var/solr
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/admin/info/health || exit 1"]
+        interval: 120s
+        timeout: 10s
+        retries: 3
+    labels:
+        autoheal: true
